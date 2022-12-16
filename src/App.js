@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+
 import './App.css';
+import CardRow from './components/CardRow';
+import Topbar from './components/topbar';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <Topbar />
+      </div>
+      <div style={{
+        marginLeft: "10%",
+        marginRight: "10%",
+      }}>
+        <div>
+          <CardRow />
+        </div>
+        <div style={{
+          fontSize: "1.5rem",
+          fontWeight: "700",
+          textAlign: "left",
+          marginTop : "1rem",
+          marginBottom : "1rem",
+        }}>
+          Top 100 Cryptocurrencies by Market Cap
+        </div>
+      </div>
     </div>
   );
 }
