@@ -18,3 +18,12 @@
     justify-content: space-between;
     font-size: 1.5rem;
 }
+
+.tableTilte{
+    font-size: 14px;
+    font-weight: 600;
+}
+.bg-progress-custom {
+    background-color: #CFD6E4 !important;
+    color: #EFF2F5 !important;
+  }

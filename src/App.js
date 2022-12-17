@@ -1,6 +1,7 @@
 
 import './App.css';
 import CardRow from './components/CardRow';
+import Table from './components/Table';
 import Topbar from './components/topbar';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         }}>
           Top 100 Cryptocurrencies by Market Cap
         </div>
+        <Table/>
       </div>
     </div>
   );
