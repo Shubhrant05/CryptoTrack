@@ -24,7 +24,6 @@ const Table = () => {
     return (
         <div>
             <DisplayTable data={data?.data} />
-            abchdgsh
         {console.log(data?.data, "test")}</div>
     )
 }
