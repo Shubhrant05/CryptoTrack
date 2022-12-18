@@ -5,15 +5,15 @@ const TopCard = (props) => {
     <div style={{ display : "flex" ,
     justifyContent:"space-between",
     borderRadius : "1.3rem",
-    width: "23rem",
+    width: "20rem",
     height: "8rem",
     padding : "10px",
   background: "white"}}
     >
-      <div style={{background :`url(${props.img1})`, width: "25%" , height : "95%" , borderRadius : "1.3rem" }}>
+      <div style={{background :`url(${props.img1})`, width: "30%" , height : "95%" , borderRadius : "1.3rem" ,paddingRight :"2px"}}>
       </div>
       <div style={{
-        width : "70%"
+        width : "60%"
       }}>
         <div style={{
         textAlign : "left",

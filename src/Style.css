@@ -27,3 +27,37 @@
     background-color: #CFD6E4 !important;
     color: #EFF2F5 !important;
   }
+
+.modalTitle{
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.modalSubTitle{
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+}
+
+.tabledisplay{
+    margin-left: 0;
+    margin-right: 0;
+}
+.carousel-control-next{
+    display:none
+}
+.carousel-control-prev{
+    display: none;
+}
+@media only screen and (min-width: 600px) {
+    .tabledisplay{
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+    .carousel-control-next{
+        display: flex;
+    }
+    .carousel-control-prev{
+        display: flex;
+    }
+  }

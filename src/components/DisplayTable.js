@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -24,6 +24,9 @@ import { SlOptionsVertical } from 'react-icons/sl'
 import '../Style.css'
 import { ProgressBar } from 'react-bootstrap';
 import { LinearProgress } from '@mui/material';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import OptionModal from './OptionModal';
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -83,7 +86,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: theme.palette.common.white,
     color: theme.palette.common.black,
     fontSize: 14,
-    fontWeight: 600
+    fontWeight: 600,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -98,32 +101,27 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(idx, img, symbol, name, price, hours, days, marketcap, volume, circulatingsupply , option) {
-  return { idx, img, symbol, name, price, hours, days, marketcap, volume, circulatingsupply , option};
+function createData(idx, img, symbol, name, price, hours, days, marketcap, volume, circulatingsupply, option) {
+  return { idx, img, symbol, name, price, hours, days, marketcap, volume, circulatingsupply, option };
 }
 
-// const rows = [
-//   createData('Cupcake', 305, 3.7),
-//   createData('Donut', 452, 25.0),
-//   createData('Eclair', 262, 16.0),
-//   createData('Frozen yoghurt', 159, 6.0),
-//   createData('Gingerbread', 356, 16.0),
-//   createData('Honeycomb', 408, 3.2),
-//   createData('Ice cream sandwich', 237, 9.0),
-//   createData('Jelly Bean', 375, 0.0),
-//   createData('KitKat', 518, 26.0),
-//   createData('Lollipop', 392, 0.2),
-//   createData('Marshmallow', 318, 0),
-//   createData('Nougat', 360, 19.0),
-//   createData('Oreo', 437, 18.0),
-// ]
-// ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
 
 export default function DisplayTable(props) {
   // { console.log(props, "table") }
   const [page, setPage] = useState(0);
+  const [showModal, setShowModal] = useState(false)
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [id, setId] = useState(-1)
+  const mediaMatch = window.matchMedia('(max-width: 600px)');
+  console.log(mediaMatch.matches, "media")
   const rows = []
+
+  const settingId = (id) => {
+    setId(id)
+  }
+  useEffect(() => {
+    settingId(id)
+  }, [id])
 
   props?.data?.forEach(ele => {
     rows.push(createData(
@@ -155,97 +153,146 @@ export default function DisplayTable(props) {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell className='tableTilte' style={{ color: 'white' }}>#</StyledTableCell>
-            <StyledTableCell className='tableTilte'>#</StyledTableCell>
-            <StyledTableCell className='tableTilte'>Name</StyledTableCell>
-            <StyledTableCell align="right" >Price</StyledTableCell>
-            <StyledTableCell align="right" className='tableTilte'>24H</StyledTableCell>
-            <StyledTableCell align="right" className='tableTilte'>7D</StyledTableCell>
-            <StyledTableCell align="right" className='tableTilte'>Market Cap</StyledTableCell>
-            <StyledTableCell align="right" className='tableTilte'>Volume(24H)</StyledTableCell>
-            <StyledTableCell align="right" className='tableTilte'>Circulating Supply</StyledTableCell>
-            <StyledTableCell className='tableTilte' style={{ color: 'white' }}>#</StyledTableCell>
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
-          ).map((row) => (
-            <TableRow key={row.name}>
-              <TableCell style={{ width: 10, color: "#808A9D" }} align="right">
-                <AiOutlineStar />
-              </TableCell>
-              <TableCell style={{ width: 10 }} align="right">
-                {row.idx}
-              </TableCell>
-              <TableCell component="th" scope="row" >
-                <div style={{ display: "flex", alignItems: 'center' }}>
-
-                  <img src={row.img} alt='' style={{ width: "24px", height: "24px", paddingRight: '5px' }} />
-                  <div style={{ textWrap: "none" }}>
-                    {row.name}
-                    <span style={{ paddingLeft: "4px", fontWeight: "500", color: "#808A9D" }}>({row.symbol})</span>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                ${row.price}
-              </TableCell>
-              <TableCell style={{ width: 160, fontWeight: "600", color: `${row.hours < 0 ? "#EA3943" : "#16C784"}` }} align="right">
-                {row.hours < 0 ? <AiFillCaretDown /> : <AiFillCaretUp />}{row.hours}%
-              </TableCell>
-              <TableCell style={{ width: 160, fontWeight: "600", color: `${row.days < 0 ? "#EA3943" : "#16C784"}` }} align="right">
-                {row.days < 0 ? <AiFillCaretDown /> : <AiFillCaretUp />}{row.days}%
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                ${row.marketcap}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                ${row.volume}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.circulatingsupply} BTC
-                <ProgressBar now={60} variant = "progress-custom" style={{ height : "0.5rem" , borderRadius : "1.5rem"}}/>
-              </TableCell>
-              <TableCell style={{ width: 60 }} align="right">
-                <SlOptionsVertical/>
-              </TableCell>
+    <>
+      <OptionModal show={showModal} onHide={() => setShowModal(false)} data={rows} id={id} />
+      <TableContainer component={Paper}>
+        <Table  aria-label="custom pagination table">
+          <TableHead>
+            <TableRow>
+              {!mediaMatch.matches && <StyledTableCell className='tableTilte' style={{ color: 'white' }}>#</StyledTableCell>}
+              <StyledTableCell className='tableTilte' style={{color:`${ mediaMatch.matches ? 'white' : 'black'}`}}>#</StyledTableCell>
+              <StyledTableCell className='tableTilte'>Name</StyledTableCell>
+              <StyledTableCell align="right" >Price</StyledTableCell>
+              <StyledTableCell align="right" className='tableTilte'>24H</StyledTableCell>
+              {!mediaMatch.matches && <StyledTableCell align="right" className='tableTilte'>7D</StyledTableCell>}
+              {!mediaMatch.matches && <StyledTableCell align="right" className='tableTilte'>Market Cap</StyledTableCell>}
+              {!mediaMatch.matches && <StyledTableCell align="right" className='tableTilte'>Volume(24H)</StyledTableCell>}
+              {!mediaMatch.matches && <StyledTableCell align="right" className='tableTilte'>Circulating Supply</StyledTableCell>}
+              {!mediaMatch.matches && <StyledTableCell className='tableTilte' style={{ color: 'white' }}>#</StyledTableCell>}
             </TableRow>
-          ))}
+          </TableHead>
 
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
+          {!mediaMatch.matches ? <TableBody>
+            {(rowsPerPage > 0
+              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : rows
+            ).map((row) => (
+              <>
+
+                <TableRow key={row.name}>
+                   <TableCell style={{ width: 10, color: "#808A9D" }} align="right">
+                    <AiOutlineStar />
+                  </TableCell>
+                  <TableCell style={{ width: 10 }} align="right">
+                    {row.idx}
+                  </TableCell>
+                  <TableCell component="th" scope="row" >
+                    <div style={{ display: "flex", alignItems: 'center' }}>
+
+                      <img src={row.img} alt='' style={{ width: "24px", height: "24px", paddingRight: '5px' }} />
+                      <div style={{ textWrap: "none" }} onClick={() => {
+                        setShowModal(mediaMatch.matches)
+                        settingId(row.idx)
+                      }}>
+                        {row.name}
+                        <span style={{ paddingLeft: "4px", fontWeight: "500", color: "#808A9D" }}>({row.symbol})</span>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="right">
+                    ${row.price}
+                  </TableCell>
+                  <TableCell style={{ width: 160, fontWeight: "600", color: `${row.hours < 0 ? "#EA3943" : "#16C784"}` }} align="right">
+                    {row.hours < 0 ? <AiFillCaretDown /> : <AiFillCaretUp />}{row.hours}%
+                  </TableCell>
+                  <TableCell style={{ width: 160, fontWeight: "600", color: `${row.days < 0 ? "#EA3943" : "#16C784"}` }} align="right">
+                    {row.days < 0 ? <AiFillCaretDown /> : <AiFillCaretUp />}{row.days}%
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="right">
+                    ${row.marketcap}
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="right">
+                    ${row.volume}
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="right">
+                    {row.circulatingsupply} BTC
+                    <ProgressBar now={60} variant="progress-custom" style={{ height: "0.5rem", borderRadius: "1.5rem" }} />
+                  </TableCell>
+                  <TableCell style={{ width: 60 }} align="right">
+                    <SlOptionsVertical />
+                  </TableCell>
+                </TableRow>
+              </>
+            ))}
+
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+          : <TableBody>
+            {(rowsPerPage > 0
+              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : rows
+            ).map((row) => (
+              <>
+
+                <TableRow key={row.name}>
+                   <TableCell style={{ width: 10, color: "#808A9D" }} align="right">
+                    <AiOutlineStar />
+                  </TableCell>
+                  <TableCell component="th" scope="row" >
+                    <div style={{ display: "flex", alignItems: 'center' }}>
+
+                      <img src={row.img} alt='' style={{ width: "24px", height: "24px", paddingRight: '5px' }} />
+                      <div style={{ textWrap: "none" }} onClick={() => {
+                        setShowModal(mediaMatch.matches)
+                        settingId(row.idx)
+                      }}>
+                        {row.name}
+                        <span style={{ paddingLeft: "4px", fontWeight: "500", color: "#808A9D" }}>({row.symbol})</span>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell style={{ width: 60 }} align="right">
+                    ${row.price}
+                  </TableCell>
+                  <TableCell style={{ width: 60, fontWeight: "600", color: `${row.hours < 0 ? "#EA3943" : "#16C784"}` }} align="right">
+                    {row.hours < 0 ? <AiFillCaretDown /> : <AiFillCaretUp />}{row.hours}%
+                  </TableCell>
+                </TableRow>
+              </>
+            ))}
+
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>}
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                colSpan={!mediaMatch.matches ? 10 : 4}
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: {
+                    'aria-label': 'rows per page',
+                  },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
             </TableRow>
-          )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              colSpan={10}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: {
-                  'aria-label': 'rows per page',
-                },
-                native: true,
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
