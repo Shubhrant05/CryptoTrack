@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     padding: 1%;
-    background-color: white;
+    background: white;
     height: 2%;
 }
 
@@ -43,21 +43,24 @@
     margin-left: 0;
     margin-right: 0;
 }
-.carousel-control-next{
-    display:none
-}
-.carousel-control-prev{
-    display: none;
+.SimpleButton{
+    background: #EFF2F5;
+    color: #5B667C;
+    font-weight: 600;
+    font-size: 12px;
+    border-radius: 8px;
+    padding:8px;
 }
 @media only screen and (min-width: 600px) {
     .tabledisplay{
         margin-left: 10%;
         margin-right: 10%;
     }
-    .carousel-control-next{
-        display: flex;
-    }
-    .carousel-control-prev{
-        display: flex;
+    .SimpleButton{
+        background: #EFF2F5;
+        color: #5B667C;
+        font-weight: 600;
+        font-size: 12px;
+        border-radius: 8px;
     }
   }

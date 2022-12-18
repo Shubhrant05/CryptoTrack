@@ -1,6 +1,8 @@
 
 import './App.css';
+import ButtonRow from './components/ButtonRow';
 import CardRow from './components/CardRow';
+import SimpleButton from './components/SimpleButton';
 import Table from './components/Table';
 import Topbar from './components/topbar';
 import TopCarousel from './components/TopCarousel';
@@ -28,7 +30,7 @@ function App() {
           Top 100 Cryptocurrencies by Market Cap
           
         </div>
-
+        {!mediaMatch.matches && <ButtonRow/>}
       </div>
       <div className='tabledisplay'><Table /></div> 
     </div>
