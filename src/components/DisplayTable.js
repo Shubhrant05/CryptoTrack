@@ -122,7 +122,7 @@ export default function DisplayTable(props) {
   useEffect(() => {
     settingId(id)
   }, [id])
-
+  console.log(props.data)
   props?.data?.forEach(ele => {
     rows.push(createData(
       ele?.market_cap_rank,
