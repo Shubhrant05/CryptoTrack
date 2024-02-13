@@ -125,16 +125,16 @@ export default function DisplayTable(props) {
 
   props?.data?.forEach(ele => {
     rows.push(createData(
-      ele.market_cap_rank,
-      ele.image,
-      ele.symbol.toUpperCase(),
-      ele.name,
-      ele.current_price,
-      ele.price_change_percentage_24h.toFixed(2),
-      ele.price_change_percentage_7d_in_currency.toFixed(2),
-      ele.market_cap,
-      ele.total_volume,
-      ele.circulating_supply
+      ele?.market_cap_rank,
+      ele?.image,
+      ele?.symbol.toUpperCase(),
+      ele?.name,
+      ele?.current_price,
+      ele?.price_change_percentage_24h.toFixed(2),
+      ele?.price_change_percentage_7d_in_currency.toFixed(2),
+      ele?.market_cap,
+      ele?.total_volume,
+      ele?.circulating_supply
     ))
   });
 
