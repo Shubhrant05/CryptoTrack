@@ -130,8 +130,8 @@ export default function DisplayTable(props) {
       ele?.symbol.toUpperCase(),
       ele?.name,
       ele?.current_price,
-      ele?.price_change_percentage_24h.toFixed(2),
-      ele?.price_change_percentage_7d_in_currency.toFixed(2),
+      Number(ele?.price_change_percentage_24h).toFixed(2),
+      Number(ele?.price_change_percentage_7d_in_currency).toFixed(2),
       ele?.market_cap,
       ele?.total_volume,
       ele?.circulating_supply
